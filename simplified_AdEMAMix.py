@@ -27,19 +27,21 @@ class SimAdEMAMix(Optimizer):
         params (iterable): iterable of parameters to optimize or dicts defining
             parameter groups
         lr (float, optional): learning rate (default: 1e-3)
-        betas (Tuple[float, float, float], optional): coefficients used for computing
-            running averages of gradient and its square (default: (0.9, 0.999, 0.9999)) 
-            corresponding to beta_1, beta_2, beta_3 in AdEMAMix
-        alpha (float): AdEMAMix alpha coeficient mixing the slow and fast EMAs (default: 2)
-        beta3_warmup (int, optional): number of warmup steps used to increase beta3 (default: None)
-        alpha_warmup: (int, optional): number of warmup steps used to increase alpha (default: None)
+        betas (Tuple[float, float], optional): coefficients used for computing
+            running averages of gradient and its square (default: (0.99, 0.95)) 
+            corresponding to beta_1, beta_2 in simplified AdEMAMix
+        alpha (float): coeficient for mixing the current gradient and EMA (default: 0)
+        beta1_warmup (int, optional): number of warmup steps used to increase beta1 (default: None)
         eps (float, optional): term added to the denominator to improve
             numerical stability (default: 1e-8)
         weight_decay (float, optional): weight decay as in AdamW (default: 0)
+        min_beta1 (float, optional): minimum value of beta1 to start from (default 0.9)
+        bias_correction1 (bool, optional): whether to use bias_correction in numerator
+        bias_correction2 (bool, optional): whether to use bias_correction in denominator
     """
 
-    def __init__(self, params, lr=1e-3, betas=(0.99, 0.999), alpha=2.0, 
-                 beta1_warmup=None, eps=1e-8, weight_decay=0.0, min_beta1=0.0,
+    def __init__(self, params, lr=1e-3, betas=(0.99, 0.95), alpha=0.0, 
+                 beta1_warmup=None, eps=1e-8, weight_decay=0.0, min_beta1=0.9,
                  bias_correction1=False, bias_correction2=True):
         if not 0.0 <= lr:
             raise ValueError("Invalid learning rate: {}".format(lr))
