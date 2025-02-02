@@ -26,7 +26,7 @@ class SimAdEMAMix(Optimizer):
     Arguments:
         params (iterable): iterable of parameters to optimize or dicts defining
             parameter groups
-        lr (float, optional): learning rate (default: 1e-3)
+        lr (float, optional): learning rate (default: 1e-4)
         betas (Tuple[float, float], optional): coefficients used for computing
             running averages of gradient and its square (default: (0.99, 0.95)) 
             corresponding to beta_1, beta_2 in simplified AdEMAMix
@@ -40,7 +40,7 @@ class SimAdEMAMix(Optimizer):
         bias_correction2 (bool, optional): whether to use bias_correction in denominator
     """
 
-    def __init__(self, params, lr=1e-3, betas=(0.99, 0.95), alpha=0.0, 
+    def __init__(self, params, lr=1e-4, betas=(0.99, 0.95), alpha=0.0, 
                  beta1_warmup=None, eps=1e-8, weight_decay=0.0, min_beta1=0.9,
                  bias_correction1=False, bias_correction2=True):
         if not 0.0 <= lr:
@@ -51,8 +51,6 @@ class SimAdEMAMix(Optimizer):
             raise ValueError("Invalid beta parameter at index 0: {}".format(betas[0]))
         if not 0.0 <= betas[1] < 1.0:
             raise ValueError("Invalid beta parameter at index 1: {}".format(betas[1]))
-        if not 0.0 <= betas[2] < 1.0:
-            raise ValueError("Invalid beta parameter at index 2: {}".format(betas[2]))
         if not 0.0 <= weight_decay:
             raise ValueError("Invalid weight_decay value: {}".format(weight_decay))
         if not 0.0 <= alpha:
