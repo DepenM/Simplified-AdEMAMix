@@ -1,1 +1,13 @@
 # Simplified-AdEMAMix
+
+This is the official implementation of the Sim-AdEMAMix optimizer. To use, copy the simplified_AdEMAMix.py file to your codebase and use the optimizer in the following fashion:
+
+```
+from simplified_AdEMAMix import SimAdEMAMix
+
+optim = SimAdEMAMix(lr = 1e-4, betas=(.99, .95), alpha=0.0, min_beta1=0.9, beta1_warmup=3200, weight_decay=0.0, precondition_frequency=10)
+```
+
+The optimizer by default has the bias correction for the numerator turned off by default (inspired by theory), which generally seems to help in practice with cosine decay. This also implies that tuning beta1 and learning rate is coupled, in the sense that a higher beta1, should generally scale down the learning rate such that $\eta/(1-\beta_1)$ is constant. Similarly, $\alpha$ really depends on the batch size, and from theory, should scale down linearly with increase in batch size. Our optimal alpha at a batch size of 1m tokens was close to 0, while at 32k was close to 100. 
+
+
